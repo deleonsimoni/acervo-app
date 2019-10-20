@@ -9,26 +9,38 @@
 </header>
 <section class="text-center" style="position: relative; margin-top: -50px; z-index: 1;">
   <div class="container">
-      <div class="card">
-        <div class="card-header header-elements-inline">
-          <h6 class="card-title">Redescubra a Historia</h6>
-          <div class="header-elements">
-            <div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
-                <input type="text" [(ngModel)]='location.address_level_1' (keyup.enter)='updateOnMap()'
-                    placeholder="Pesquise uma localidade (tecle Enter)" class="form-control" />
-            </div>
+    <div class="card">
+      <div class="card-header header-elements-inline">
+        <h6 class="card-title">Redescubra a Historia</h6>
+        <div class="header-elements">
+          <div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
+            <input type="text" [(ngModel)]='location.address_level_1' (keyup.enter)='updateOnMap()'
+              placeholder="Pesquise uma localidade (tecle Enter)" class="form-control" />
           </div>
         </div>
       </div>
     </div>
+  </div>
 </section>
 
-<agm-map #map [latitude]="location.lat" [longitude]="location.lng">
+<agm-map #map [latitude]="location.lat" [longitude]="location.lng" [styles]="style">
   <!-- agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'" -->
-    <agm-marker *ngFor="let pos of positions" [latitude]="pos.lat" [longitude]="pos.lng">
-      <agm-info-window #window>
-        <h6>Local: {{ pos.label }}</h6>
-        <img [src]="pos.imagem" style="width: 80px;" />
-      </agm-info-window>
-    </agm-marker>
+  <agm-marker *ngFor="let pos of positions" (markerClick)="openModal(template, pos)" [latitude]="pos.lat" [longitude]="pos.lng">
+  </agm-marker>
 </agm-map>
+
+<ng-template #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Localidade</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <b>Local:</b> {{ location.label}}
+    <b>Latitude:</b> {{ location.lat}}
+    <b>Longitude:</b> {{ location.lng}}
+    <img [src]="location.imagem" style="width: 100%;">
+    <b>Info:</b> {{ location.info}}
+  </div>
+</ng-template>

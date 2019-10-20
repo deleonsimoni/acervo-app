@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { MapasComponent } from './mapas/mapas.component';
 import { AgmCoreModule } from '@agm/core';
+import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 
 @NgModule({
   declarations: [
@@ -38,9 +39,12 @@ import { AgmCoreModule } from '@agm/core';
     AppRoutingModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDH7oOZdBbMgyLURojHNE9tcggTpnJTa3Q'
-    }),
+    }), 
+    ModalModule.forRoot(),
   ],
-  providers: [{
+  providers: [
+    BsModalRef,
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthHeaderInterceptor,
     multi: true,
