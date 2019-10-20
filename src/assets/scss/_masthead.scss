@@ -1,27 +1,96 @@
-header.masthead {
-  position: relative;
-  background-color: $gray-800;
-  background: url('../img/bg-masthead.jpg') no-repeat center center;
-  @include background-cover;
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-  .overlay {
-    position: absolute;
-    background-color: $gray-900;
-    height: 100%;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0.3;
+.masthead {
+  padding-top: calc(6rem + 74px);
+  padding-bottom: 6rem;
+  .masthead-heading {
+    font-size: 2.75rem;
+    line-height: 2.75rem;
   }
-  h1 {
-    font-size: 2rem;
+  .masthead-subheading {
+    font-size: 1.25rem;
   }
-  @media (min-width: 768px) {
-    padding-top: 12rem;
-    padding-bottom: 12rem;
-    h1 {
-      font-size: 3rem;
+  .masthead-avatar {
+    width: 15rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .masthead {
+    padding-top: calc(6rem + 104px);
+    padding-bottom: 6rem;
+    .masthead-heading {
+      font-size: 4rem;
+      line-height: 3.5rem;
+    }
+    .masthead-subheading {
+      font-size: 1.5rem;
+    }
+
+  }
+}
+
+
+
+
+// Styling for the navbar
+#mainNav {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-family: $headings-font-family;
+  font-weight: $headings-font-weight;
+  .navbar-brand {
+    color: $white;
+  }
+  .navbar-nav {
+    margin-top: 1rem;
+    li.nav-item {
+      a.nav-link {
+        color: $white;
+        &:hover {
+          color: $primary;
+        }
+        &:active,
+        &:focus {
+          color: $white;
+        }
+        &.active {
+          color: $primary;
+        }
+      }
+    }
+  }
+  .navbar-toggler {
+    font-size: 80%;
+    padding: 0.8rem;
+  }
+}
+@include media-breakpoint-up(lg) {
+  #mainNav {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    transition: padding-top 0.3s, padding-bottom 0.3s;
+    .navbar-brand {
+      font-size: 1.75em;
+      transition: font-size 0.3s;
+    }
+    .navbar-nav {
+      margin-top: 0;
+    }
+    .navbar-nav > li.nav-item > a.nav-link.active {
+      color: $white;
+      background: $primary;
+      &:active,
+      &:focus,
+      &:hover {
+        color: $white;
+        background: $primary;
+      }
+    }
+  }
+  #mainNav.navbar-shrink {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    .navbar-brand {
+      font-size: 1.5em;
     }
   }
 }
