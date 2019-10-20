@@ -31,9 +31,9 @@ interface Location {
   templateUrl: './mapas.component.html',
   styleUrls: ['./mapas.component.css']
 })
-export class MapasComponent implements OnInit { 
+export class MapasComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router, public mapsApiLoader: MapsAPILoader) { 
+  constructor(private route: ActivatedRoute, private router: Router, public mapsApiLoader: MapsAPILoader) {
     this.mapsApiLoader = mapsApiLoader;
     //new MarkerClusterer(map, opt_markers, opt_options)
 
@@ -42,12 +42,12 @@ export class MapasComponent implements OnInit {
     });
   }
 
-  @ViewChild(AgmMap, { })
+  @ViewChild(AgmMap, { static: true })
   map: AgmMap;
 
   geocoder: any;
-  address_level: string="";
-  
+  address_level: string = "";
+
   location: Location = {
     lat: -23.877,
     lng: -49.804,
@@ -70,7 +70,7 @@ export class MapasComponent implements OnInit {
 
   ngOnInit() {
     this.route.queryParamMap.pipe(
-      map(params => 
+      map(params =>
         this.location.address_level_1 = params.get('itemPesquisa')
       ));
   }
