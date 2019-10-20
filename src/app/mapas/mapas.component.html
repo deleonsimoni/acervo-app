@@ -1,13 +1,4 @@
-<header class="masthead text-white text-center">
-  <div class="container">
-    <div class="row">
-      <div class="col-xl-9 mx-auto">
-        <h1 class="mb-5"></h1>
-      </div>
-    </div>
-  </div>
-</header>
-<section class="text-center" style="position: relative; margin-top: -50px; z-index: 1;">
+<section class="text-center" style="position: relative;margin-top: 50px;z-index: 1;">
   <div class="container">
     <div class="card">
       <div class="card-header header-elements-inline">
@@ -23,7 +14,7 @@
   </div>
 </section>
 
-<agm-map #map [latitude]="location.lat" [longitude]="location.lng" [styles]="style">
+<agm-map #map [latitude]="location.lat" [longitude]="location.lng" [styles]="styles">
   <!-- agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'" -->
   <agm-marker *ngFor="let pos of positions" (markerClick)="openModal(template, pos)" [latitude]="pos.lat" [longitude]="pos.lng">
   </agm-marker>
