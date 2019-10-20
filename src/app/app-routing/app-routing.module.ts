@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../auth/auth-guard.service';
 import { HomeComponent } from '../home/home.component';
+import { MapasComponent } from '../mapas/mapas.component';
 
 const routes: Routes = [{
   path: '',
@@ -12,7 +13,9 @@ const routes: Routes = [{
 }, {
   path: 'admin',
   loadChildren: 'app/admin/admin.module#AdminModule'
-}];
+},
+    { path: 'mapas', component: MapasComponent }
+  ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

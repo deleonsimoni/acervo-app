@@ -14,9 +14,14 @@ $custom-typography: mat-typography-config(
 @include mat-core($custom-typography);
 
 body {
-  background-color: #ffe5cb;
+  background-color: aliceblue;
   margin: 0;
   app-root * {
     font-family: 'Exo', sans-serif;
   }
 }
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Roboto', sans-serif; }

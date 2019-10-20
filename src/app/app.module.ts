@@ -16,6 +16,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
+import { MapasComponent } from './mapas/mapas.component';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { FooterComponent } from './footer/footer.component';
     HeaderComponent,
     HomeComponent,
     FooterComponent,
+    MapasComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +36,9 @@ import { FooterComponent } from './footer/footer.component';
     AuthModule,
     AdminModule,
     AppRoutingModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyDH7oOZdBbMgyLURojHNE9tcggTpnJTa3Q'
+    }),
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
