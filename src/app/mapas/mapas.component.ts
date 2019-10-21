@@ -36,7 +36,7 @@ interface Location {
 export class MapasComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, public mapsApiLoader: MapsAPILoader,
-    private modalService: BsModalService) { 
+    private modalService: BsModalService) {
     this.mapsApiLoader = mapsApiLoader;
     //new MarkerClusterer(map, opt_markers, opt_options)
 
@@ -55,7 +55,7 @@ export class MapasComponent implements OnInit {
     this.location = marcacao;
     this.modalRef = this.modalService.show(template);
   }
-  
+
   address_level: string = "";
 
   location: Location = {
