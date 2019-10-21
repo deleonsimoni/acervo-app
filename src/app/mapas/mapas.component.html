@@ -1,12 +1,12 @@
-<section class="text-center" style="position: relative;margin-top: 50px;z-index: 1;">
+<section class="text-center" style="position: relative;margin-top: 60px;z-index: 1;">
   <div class="container">
     <div class="card">
       <div class="card-header header-elements-inline">
-        <h6 class="card-title">Redescubra a Historia</h6>
+        <h6 class="card-title">O que deseja procurar?</h6>
         <div class="header-elements">
           <div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
             <input type="text" [(ngModel)]='location.address_level_1' (keyup.enter)='updateOnMap()'
-              placeholder="Pesquise uma localidade (tecle Enter)" class="form-control" />
+              placeholder="Pesquise uma localidade" class="form-control" />
           </div>
         </div>
       </div>
@@ -15,8 +15,8 @@
 </section>
 
 <agm-map #map [latitude]="location.lat" [longitude]="location.lng" [styles]="styles">
-  <!-- agm-marker-cluster [imagePath]="'https://googlemaps.github.io/js-marker-clusterer/images/m'" -->
-  <agm-marker *ngFor="let pos of positions" (markerClick)="openModal(template, pos)" [latitude]="pos.lat" [longitude]="pos.lng">
+  <agm-marker *ngFor="let pos of positions" (markerClick)="openModal(template, pos)" [latitude]="pos.lat"
+    [longitude]="pos.lng">
   </agm-marker>
 </agm-map>
 

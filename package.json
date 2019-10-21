@@ -56,6 +56,8 @@
     "morgan": "^1.9.1",
     "ng2-dragula": "^1.5.0",
     "ngx-bootstrap": "^5.2.0",
+    "ngx-mask": "^8.1.2",
+    "ngx-toastr": "^11.1.2",
     "ngx-twitter-timeline": "^0.1.5",
     "nodemon": "^1.17.5",
     "passport": "^0.4.0",

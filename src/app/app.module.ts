@@ -19,6 +19,10 @@ import { FooterComponent } from './footer/footer.component';
 import { MapasComponent } from './mapas/mapas.component';
 import { AgmCoreModule } from '@agm/core';
 import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { NgxMaskModule } from 'ngx-mask';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -37,22 +41,26 @@ import { ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
     AuthModule,
     AdminModule,
     AppRoutingModule,
+    BsDatepickerModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    NgxMaskModule.forRoot(),
+    ToastrModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDH7oOZdBbMgyLURojHNE9tcggTpnJTa3Q'
-    }), 
+    }),
     ModalModule.forRoot(),
   ],
   providers: [
     BsModalRef,
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthHeaderInterceptor,
-    multi: true,
-  }, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: CatchErrorInterceptor,
-    multi: true,
-  }],
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHeaderInterceptor,
+      multi: true,
+    }, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CatchErrorInterceptor,
+      multi: true,
+    }],
   entryComponents: [],
   bootstrap: [AppComponent]
 })

@@ -28,4 +28,9 @@ body {
     background-clip: border-box;
     border: 1px solid rgba(0,0,0,.125);
     border-radius: .25rem;
+    opacity: 0.5;
+}
+
+.card:hover, .card:active{
+    opacity: 1.0;
 }

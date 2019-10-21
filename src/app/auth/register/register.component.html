@@ -23,15 +23,18 @@
         <tr>
           <td>
             <mat-form-field>
-              <input matInput placeholder="Password" formControlName="password" type="password" name="password" required>
+              <input matInput placeholder="Password" formControlName="password" type="password" name="password"
+                required>
             </mat-form-field>
           </td>
         </tr>
         <tr>
           <td>
             <mat-form-field>
-              <input matInput placeholder="Reapet Password" formControlName="repeatPassword" type="password" name="repeatPassword" required>
-              <mat-error *ngIf="repeatPassword.invalid && repeatPassword.errors.passwordMatch">Password mismatch</mat-error>
+              <input matInput placeholder="Reapet Password" formControlName="repeatPassword" type="password"
+                name="repeatPassword" required>
+              <mat-error *ngIf="repeatPassword.invalid && repeatPassword.errors.passwordMatch">Password mismatch
+              </mat-error>
             </mat-form-field>
           </td>
         </tr>
@@ -40,6 +43,225 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="register()" color="primary">Register</button>
-    <span>Allrady have an account ? <a [routerLink]="['/auth/login']">login</a> here</span>
   </mat-card-actions>
 </mat-card>
+
+
+
+<!--==========================
+    Intro Section
+  ============================-->
+<main id="main">
+
+  <div class="container" id="register">
+    <div class="form">
+      <form [formGroup]="registerForm" (ngSubmit)="register()" role="form" class="contactForm">
+        <div class="section-header">
+          <h2>Dados Pessoais</h2>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <input type="text" name="name" class="form-control" id="name" placeholder="Nome"
+              formControlName="fullname" />
+            <div
+              *ngIf="(validate.fullname.errors && submit) || (validate.fullname.errors && !validate.fullname.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!validate.fullname.errors.required">
+                Preencha o campo nome
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group col-md-6">
+            <input type="email" class="form-control" name="email" id="email" placeholder="Email"
+              formControlName="email" />
+            <div *ngIf="(validate.email.errors && submit) || (validate.email.errors && !validate.email.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!validate.email.errors.required">
+                Preencha o campo email
+              </div>
+              <div [hidden]="!validate.email.errors.pattern">
+                Formato de email inválido
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <input type="text" name="birth-date" class="form-control" id="birth-date" placeholder="Data de nascimento"
+              formControlName="dateBirth" bsDatepicker [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD/MM/YYYY' }"
+              autocomplete="false" />
+            <div
+              *ngIf="(validate.dateBirth.errors && submit) || (validate.dateBirth.errors && !validate.dateBirth.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!validate.dateBirth.errors.required">
+                Preencha o campo data de nascimento
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4" formGroupName="phones">
+            <input type="text" name="telephone" class="form-control" id="telephone" placeholder="Telefone"
+              formControlName="telephone" [dropSpecialCharacters]="true" mask="(00) 0000-0000" />
+          </div>
+          <div class="form-group col-md-4" formGroupName="phones">
+            <input type="text" class="form-control" name="cellphone" id="cellphone" placeholder="Celular"
+              formControlName="cellphone" [dropSpecialCharacters]="true" mask="(00) 00000-0000" [validation]="false" />
+            <div *ngIf="(phones.cellphone.errors && submit) || (phones.cellphone.errors && !phones.cellphone.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!phones.cellphone.errors.required">
+                Preencha o campo celular
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <input type="password" name="password" class="form-control" id="password" placeholder="Senha"
+              formControlName="password" />
+            <div
+              *ngIf="(validate.password.errors && submit) || (validate.password.errors && !validate.password.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!validate.password.errors.required">
+                Preencha o campo senha
+              </div>
+              <div [hidden]="!validate.password.errors.minlength">
+                A senha deve conter no mínimo 6 caracteres.
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input type="password" class="form-control" name="cf-password" id="cf-password"
+              placeholder="Confirmar senha" formControlName="cfPassword" />
+            <div
+              *ngIf="(validate.cfPassword.errors && submit) || (validate.cfPassword.errors && !validate.cfPassword.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!validate.cfPassword.errors.required">
+                Preencha o campo confirmar senha
+              </div>
+              <div [hidden]="!validate.cfPassword.errors.minlength">
+                A senha deve conter no mínimo 6 caracteres.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+
+            <input type="text" class="form-control" name="document" id="document" placeholder="CPF"
+              formControlName="document" />
+            <div
+              *ngIf="(validate.document.errors && submit) || (validate.document.errors && !validate.document.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!validate.document.errors.required">
+                Preencha o campo CPF
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="section-header">
+          <h2 mt-2>Endereço</h2>
+        </div>
+        <div class="form-row" formGroupName="address">
+          <div class="form-group col-md-6">
+            <input type="text" name="street" class="form-control" id="street" placeholder="Endereço"
+              formControlName="street" />
+            <div *ngIf="(address.street.errors && submit) || (address.street.errors && !address.street.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.street.errors.required">
+                Preencha o campo endereço
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input type="text" class="form-control" name="num" id="num" placeholder="Nº" formControlName="num" />
+            <div *ngIf="(address.num.errors && submit) || (address.num.errors && !address.num.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.num.errors.required">
+                Preencha o campo número
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row" formGroupName="address">
+          <div class="form-group col-md-6">
+            <input type="text" name="district" class="form-control" id="district" placeholder="Bairro"
+              formControlName="district" />
+            <div *ngIf="(address.district.errors && submit) || (address.district.errors && !address.district.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.district.errors.required">
+                Preencha o campo bairro
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-6">
+            <input type="text" class="form-control" name="city" id="city" placeholder="Cidade" formControlName="city" />
+            <div *ngIf="(address.city.errors && submit) || (address.city.errors && !address.city.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.city.errors.required">
+                Preencha o campo cidade
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-row" formGroupName="address">
+          <div class="form-group col-md-4">
+            <input type="text" class="form-control" name="state" id="state" placeholder="Estado"
+              formControlName="state" />
+            <div *ngIf="(address.state.errors && submit) || (address.state.errors && !address.state.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.state.errors.required">
+                Preencha o campo estado
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <input type="text" class="form-control" name="country" id="country" placeholder="País"
+              formControlName="country" />
+            <div *ngIf="(address.country.errors && submit) || (address.country.errors && !address.country.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.country.errors.required">
+                Preencha o campo país
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <input type="text" name="zip" class="form-control" id="zip" placeholder="Código postal"
+              formControlName="zip" [dropSpecialCharacters]="true" mask="00000-000" [validation]="false" />
+            <div *ngIf="(address.zip.errors && submit) || (address.zip.errors && !address.zip.pristine)"
+              class="alert alert-danger">
+              <div [hidden]="!address.zip.errors.required">
+                Preencha o campo CEP
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-12 pt-4">
+          <hr>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="id" id="termo" [value]="true"
+              formControlName="icAcceptTerms">
+            <label class="form-check-label" for="termo">
+              Li e concordo com o <a [routerLink]="" (click)="openRules()">termo de uso</a>
+            </label>
+            <div *ngIf="(validate.icAcceptTerms.errors && submit)" class="alert alert-danger">
+              <div [hidden]="!validate.icAcceptTerms.errors.required">
+                Aceite as normas para prosseguir
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!carregando" class="text-center pt-5"><button type="submit">Enviar</button></div>
+        <div *ngIf="carregando" class="text-center pt-5"><button><i class="fas fa-spinner fa-pulse"></i></button></div>
+
+      </form>
+    </div>
+
+  </div>
+
+</main>
+
+
+<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
