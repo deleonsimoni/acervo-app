@@ -5,8 +5,18 @@
         <h6 class="card-title">O que deseja procurar?</h6>
         <div class="header-elements">
           <div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
-            <input type="text" [(ngModel)]='location.address_level_1' (keyup.enter)='updateOnMap()'
-              placeholder="Pesquise uma localidade" class="form-control" />
+            <div>
+              <select class="form-control" id="opt" [(ngModel)]="pesquisa.categoria">
+                <option [selected]="pesquisa.categoria" disabled="true">Selecione
+                  a categoria</option>
+                <option *ngFor="let categoria of categorias" [value]="categoria.id">
+                  {{ categoria.name }}
+                </option>
+              </select>
+            </div>
+            <br />
+            <input type="text" [(ngModel)]='pesquisa.titulo' (keyup.enter)='updateOnMap()'
+              placeholder="ex: ESCOLAS, CADERNOS, DEPOIMENTOS..." class="form-control" />
           </div>
         </div>
       </div>
@@ -22,16 +32,24 @@
 
 <ng-template #template>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">Localidade</h4>
+    <h4 class="modal-title pull-left">Galeria - UFF Niteroi</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <b>Local:</b> {{ location.label}}
-    <b>Latitude:</b> {{ location.lat}}
-    <b>Longitude:</b> {{ location.lng}}
+    <div *ngFor="let gallery of galleries">
+      <b>Categoria:</b> {{ getNomeCategoria(gallery.categoria) }}<br />
+      <b>Titulo:</b> {{ gallery.titulo}}<br />
+      <b>Nome da Instituição:</b> {{ gallery.nomeInstituicao }}<br />
+      <b>Descrição:</b> {{ gallery.descricao }}<br />
+      <a (click)="download(gallery.caminhoArquivo)" style="color: #0c2e8a;cursor: pointer;">Download Arquivo</a>
+      <br /><br />
+    </div>
+    <!--
     <img [src]="location.imagem" style="width: 100%;">
     <b>Info:</b> {{ location.info}}
+    -->
+
   </div>
 </ng-template>

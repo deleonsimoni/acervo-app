@@ -20,6 +20,12 @@ const envVarsSchema = Joi.object({
     .description('JWT Secret required to sign'),
   MONGO_HOST: Joi.string().required()
     .description('Mongo DB host url'),
+  AWS_ACCESS_KEY: Joi.string()
+    .description('Secret Main'),
+  AWS_SECRET_ACCESS_KEY: Joi.string()
+    .description('Secret Main'),
+  PATH_S3_DEV: Joi.string().allow('')
+    .description('Path Developer AWS S3'),
   MONGO_PORT: Joi.number()
     .default(27017)
 }).unknown()
@@ -36,6 +42,9 @@ const config = {
   mongooseDebug: envVars.MONGOOSE_DEBUG,
   jwtSecret: envVars.JWT_SECRET,
   frontend: envVars.MEAN_FRONTEND || 'angular',
+  AWS_ACCESS_KEY: envVars.AWS_ACCESS_KEY,
+  AWS_SECRET_ACCESS_KEY: envVars.AWS_SECRET_ACCESS_KEY,
+  PATH_S3_DEV: envVars.PATH_S3_DEV,
   mongo: {
     host: envVars.MONGO_HOST,
     port: envVars.MONGO_PORT

@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, Inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { MapsAPILoader, AgmMap } from '@agm/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { DownloadFileService } from '../services/download-file.service';
+import { HttpClient } from '@angular/common/http';
 
 import * as MarkerClusterer from "@google/markerclusterer"
 
@@ -36,7 +38,10 @@ interface Location {
 export class MapasComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, public mapsApiLoader: MapsAPILoader,
-    private modalService: BsModalService) {
+    private modalService: BsModalService,
+    private downloadService: DownloadFileService,
+    private http: HttpClient
+  ) {
     this.mapsApiLoader = mapsApiLoader;
     //new MarkerClusterer(map, opt_markers, opt_options)
 
@@ -50,35 +55,74 @@ export class MapasComponent implements OnInit {
 
   modalRef: BsModalRef;
 
+  carregando = false;
+
   geocoder: any;
-  openModal(template: TemplateRef<any>, marcacao: any) {
-    this.location = marcacao;
-    this.modalRef = this.modalService.show(template);
-  }
+
+  pesquisa: any = {};
+
+  public categorias = [
+    { id: 1, name: 'Museus pedagógicos' },
+    { id: 2, name: 'Museus de escola' },
+    { id: 3, name: 'Centros de memoria' },
+    { id: 4, name: 'Outros museus e centros de memórias internacionais' },
+    { id: 5, name: 'Escolas' },
+    { id: 6, name: 'Arte educação' },
+    { id: 7, name: 'Escolinhas de arte do Brasil' },
+    { id: 8, name: 'Formação docente' }
+  ];
 
   address_level: string = "";
 
   location: Location = {
-    lat: -23.877,
-    lng: -49.804,
-    zoom: 5
+    lat: -22.893244,
+    lng: -43.1234836,
+    zoom: 10
   };
+
+  galleries: any;
+
   positions: any = [
     {
-      lat: -23.8779431,
-      lng: -49.8046873,
+      lat: -22.893244,
+      lng: -43.1234836,
       label: 'Caverna 1',
       info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
       imagem: 'https://abrilsuperinteressante.files.wordpress.com/2018/07/56046e590e2163449306d1abmaior-caverna.jpeg?quality=70&strip=info'
-    },
-    {
-      lat: -23.877,
-      lng: -49.904,
-      label: 'Caverna 2',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-      imagem: 'https://assets.b9.com.br/wp-content/uploads/2019/04/resgate-meninos-tailandi-netflix-488x274.jpg'
     }
-  ]
+  ];
+
+  download(nameFile) {
+    const vm = this;
+    function sucessoDownload() {
+      vm.carregando = false;
+    }
+    function falhaDownload(err) {
+      this.toastr.error('Erro ao relizar download.', 'Erro: ');
+      vm.carregando = false;
+    }
+    this.carregando = true;
+    this.downloadService.getFile(nameFile, sucessoDownload, falhaDownload);
+  }
+
+
+  openModal(template: TemplateRef<any>, marcacao: any) {
+    this.carregando = true;
+    this.http.get(`api/user/getGallerys`).subscribe((res: any) => {
+      this.galleries = res;
+      this.carregando = false;
+    }, err => {
+      this.carregando = false;
+    });
+
+
+
+    this.modalRef = this.modalService.show(template);
+  }
+
+  getNomeCategoria(categoria) {
+    return this.categorias.filter(element => element.id === categoria)[0].name;
+  }
 
   ngOnInit() {
     this.route.queryParamMap.pipe(

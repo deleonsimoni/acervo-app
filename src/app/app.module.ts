@@ -23,6 +23,8 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
+import { UploadComponent } from './upload/upload.component';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { ToastrModule } from 'ngx-toastr';
     HomeComponent,
     FooterComponent,
     MapasComponent,
+    UploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,10 +56,6 @@ import { ToastrModule } from 'ngx-toastr';
   providers: [
     BsModalRef,
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthHeaderInterceptor,
-      multi: true,
-    }, {
       provide: HTTP_INTERCEPTORS,
       useClass: CatchErrorInterceptor,
       multi: true,
