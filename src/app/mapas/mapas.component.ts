@@ -37,6 +37,43 @@ interface Location {
 })
 export class MapasComponent implements OnInit {
 
+  @ViewChild(AgmMap, { static: true })
+  map: AgmMap;
+
+  modalRef: BsModalRef;
+  carregando = false;
+  geocoder: any;
+  pesquisa: any = {};
+  address_level: string = "";
+  galleries: any;
+
+  public categorias = [
+    { id: 1, name: 'Museus pedagógicos' },
+    { id: 2, name: 'Museus de escola' },
+    { id: 3, name: 'Centros de memoria' },
+    { id: 4, name: 'Outros museus e centros de memórias internacionais' },
+    { id: 5, name: 'Escolas' },
+    { id: 6, name: 'Arte educação' },
+    { id: 7, name: 'Escolinhas de arte do Brasil' },
+    { id: 8, name: 'Formação docente' }
+  ];
+  
+  location: Location = {
+    lat: -22.893244,
+    lng: -43.1234836,
+    zoom: 10
+  };
+
+  positions: any = [
+    {
+      lat: -22.893244,
+      lng: -43.1234836,
+      label: 'Caverna 1',
+      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+      imagem: 'https://abrilsuperinteressante.files.wordpress.com/2018/07/56046e590e2163449306d1abmaior-caverna.jpeg?quality=70&strip=info'
+    }
+  ];
+
   constructor(private route: ActivatedRoute, private router: Router, public mapsApiLoader: MapsAPILoader,
     private modalService: BsModalService,
     private downloadService: DownloadFileService,
@@ -49,48 +86,6 @@ export class MapasComponent implements OnInit {
       this.geocoder = new google.maps.Geocoder();
     });
   }
-
-  @ViewChild(AgmMap, { static: true })
-  map: AgmMap;
-
-  modalRef: BsModalRef;
-
-  carregando = false;
-
-  geocoder: any;
-
-  pesquisa: any = {};
-
-  public categorias = [
-    { id: 1, name: 'Museus pedagógicos' },
-    { id: 2, name: 'Museus de escola' },
-    { id: 3, name: 'Centros de memoria' },
-    { id: 4, name: 'Outros museus e centros de memórias internacionais' },
-    { id: 5, name: 'Escolas' },
-    { id: 6, name: 'Arte educação' },
-    { id: 7, name: 'Escolinhas de arte do Brasil' },
-    { id: 8, name: 'Formação docente' }
-  ];
-
-  address_level: string = "";
-
-  location: Location = {
-    lat: -22.893244,
-    lng: -43.1234836,
-    zoom: 10
-  };
-
-  galleries: any;
-
-  positions: any = [
-    {
-      lat: -22.893244,
-      lng: -43.1234836,
-      label: 'Caverna 1',
-      info: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-      imagem: 'https://abrilsuperinteressante.files.wordpress.com/2018/07/56046e590e2163449306d1abmaior-caverna.jpeg?quality=70&strip=info'
-    }
-  ];
 
   download(nameFile) {
     const vm = this;
@@ -105,7 +100,6 @@ export class MapasComponent implements OnInit {
     this.downloadService.getFile(nameFile, sucessoDownload, falhaDownload);
   }
 
-
   openModal(template: TemplateRef<any>, marcacao: any) {
     this.carregando = true;
     this.http.get(`api/user/getGallerys`).subscribe((res: any) => {
@@ -114,8 +108,6 @@ export class MapasComponent implements OnInit {
     }, err => {
       this.carregando = false;
     });
-
-
 
     this.modalRef = this.modalService.show(template);
   }

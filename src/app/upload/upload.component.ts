@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
+import { MapsAPILoader } from '@agm/core';
+
+declare var google: any;
 
 @Component({
   selector: 'app-upload',
@@ -10,14 +13,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UploadComponent implements OnInit {
 
-  constructor(
-
-    private builder: FormBuilder,
-    private toastr: ToastrService,
-    private http: HttpClient,
-
-
-  ) { }
+  geocoder: any;
 
   public submissionForm: FormGroup;
   public carregando = false;
@@ -34,20 +30,39 @@ export class UploadComponent implements OnInit {
     { id: 8, name: 'Formação docente' }
   ];
 
+  constructor(
+    public mapsApiLoader: MapsAPILoader,
+    private builder: FormBuilder,
+    private toastr: ToastrService,
+    private http: HttpClient,
+  ) {
+    this.mapsApiLoader = mapsApiLoader;
+    this.mapsApiLoader.load().then(() => {
+      this.geocoder = new google.maps.Geocoder();
+    });
+  }
+
   ngOnInit() {
     this.createForm();
-
   }
 
   private createForm(): void {
-
     this.submissionForm = this.builder.group({
       categoria: [null],
       titulo: [null],
       nomeInstituicao: [null],
-      descricao: [null]
+      descricao: [null],
+      lat: [-22.893244],
+      lng: [-43.1234836]
     });
+  }
 
+  placeMarker(position: any) {
+    const lat = position.coords.lat;
+    const lng = position.coords.lng;
+
+    this.submissionForm.get('lat').setValue(lat);
+    this.submissionForm.get('lng').setValue(lng);
   }
 
   public getFileName(): string {
@@ -60,7 +75,6 @@ export class UploadComponent implements OnInit {
   }
 
   public upload() {
-
     if (!this.arquivo) {
       this.toastr.error('É necessário selecionar um arquivo para upload', 'Atenção');
       return;
@@ -85,8 +99,6 @@ export class UploadComponent implements OnInit {
     } else {
       this.carregando = true;
 
-      this.submissionForm.value.lat = -22.893244;
-      this.submissionForm.value.long = -43.1234836;
       this.submissionForm.value.arquivo = this.arquivo[0];
 
       const formData: FormData = new FormData();
@@ -109,14 +121,28 @@ export class UploadComponent implements OnInit {
         this.carregando = false;
         this.toastr.error('Servidor momentaneamente inoperante.', 'Erro: ');
       }
-
       );
-
     }
   }
 
+  findLocation(address) {
+    if (!this.geocoder) { this.geocoder = new google.maps.Geocoder(); }
+    this.geocoder.geocode({
+      'address': address.target.value
+    }, (results, status) => {
+      if (status == google.maps.GeocoderStatus.OK) {
+        for (var i = 0; i < results[0].address_components.length; i++) {
+          let types = results[0].address_components[i].types;
+        }
 
-
-
-
+        if (results[0].geometry.location) {
+          this.submissionForm.get('lat').setValue(results[0].geometry.location.lat());
+          this.submissionForm.get('lng').setValue(results[0].geometry.location.lng());
+          //this.location.get("viewport").setValue(results[0].geometry.viewport);
+        }
+      } else {
+        alert("Desculpa, mas a pesquisa não trouxe resultados");
+      }
+    });
+  }
 }
