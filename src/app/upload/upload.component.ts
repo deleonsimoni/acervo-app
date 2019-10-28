@@ -85,15 +85,15 @@ export class UploadComponent implements OnInit {
       this.toastr.error('Selecione uma categoria.', 'Atenção');
       return;
     } if (!this.submissionForm.value.titulo) {
-      // tslint:disable-next-line: align
       this.toastr.error('Escreva o titulo do arquivo', 'Atenção');
       return;
     } if (!this.submissionForm.value.nomeInstituicao) {
-      // tslint:disable-next-line: align
       this.toastr.error('Escreva o nome da Instituição.', 'Atenção');
       return;
+    } if (!this.submissionForm.value.lng) {
+      this.toastr.error('Marque uma posição no mapa.', 'Atenção');
+      return;
     } if (!this.submissionForm.value.descricao) {
-      // tslint:disable-next-line: align
       this.toastr.error('Escreva a descrição', 'Atenção');
       return;
     } else {
@@ -112,7 +112,6 @@ export class UploadComponent implements OnInit {
         if (res && res.temErro) {
           this.toastr.error(res.mensagem, 'Erro: ');
         } else {
-
           this.toastr.success('Arquivo enviado com sucesso', 'Sucesso');
           this.submissionForm.reset();
           this.arquivo = null;
@@ -138,7 +137,6 @@ export class UploadComponent implements OnInit {
         if (results[0].geometry.location) {
           this.submissionForm.get('lat').setValue(results[0].geometry.location.lat());
           this.submissionForm.get('lng').setValue(results[0].geometry.location.lng());
-          //this.location.get("viewport").setValue(results[0].geometry.viewport);
         }
       } else {
         alert("Desculpa, mas a pesquisa não trouxe resultados");

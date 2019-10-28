@@ -6,8 +6,9 @@
         <div class="header-elements">
           <div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
             <div>
-              <select class="form-control" id="opt" [(ngModel)]="pesquisa.categoria">
-                <option [selected]="pesquisa.categoria" disabled="true">Selecione
+              <select class="form-control" id="opt" [(ngModel)]="categoria"
+                  (change)="mudarCategoria()">
+                <option disabled="true" [value]="0">Selecione
                   a categoria</option>
                 <option *ngFor="let categoria of categorias" [value]="categoria.id">
                   {{ categoria.name }}
@@ -15,8 +16,8 @@
               </select>
             </div>
             <br />
-            <input type="text" [(ngModel)]='pesquisa.titulo' (keyup.enter)='updateOnMap()'
-              placeholder="ex: ESCOLAS, CADERNOS, DEPOIMENTOS..." class="form-control" />
+            <!-- input type="text" [(ngModel)]='pesquisa.titulo' (keyup.enter)='updateOnMap()'
+              placeholder="ex: ESCOLAS, CADERNOS, DEPOIMENTOS..." class="form-control" /-->
           </div>
         </div>
       </div>
@@ -24,8 +25,8 @@
   </div>
 </section>
 
-<agm-map #map [latitude]="location.lat" [longitude]="location.lng" [styles]="styles">
-  <agm-marker *ngFor="let pos of positions" (markerClick)="openModal(template, pos)" [latitude]="pos.lat"
+<agm-map [latitude]="location.lat" [longitude]="location.lng" [styles]="styles">
+  <agm-marker *ngFor="let pos of galleries" (markerClick)="openModal(template, pos)" [latitude]="pos.lat"
     [longitude]="pos.lng">
   </agm-marker>
 </agm-map>
@@ -39,17 +40,12 @@
   </div>
   <div class="modal-body">
     <div *ngFor="let gallery of galleries">
-      <b>Categoria:</b> {{ getNomeCategoria(gallery.categoria) }}<br />
+      <b>Categoria:</b> {{ getNomeCategoria(categoria) }}<br />
       <b>Titulo:</b> {{ gallery.titulo}}<br />
       <b>Nome da Instituição:</b> {{ gallery.nomeInstituicao }}<br />
       <b>Descrição:</b> {{ gallery.descricao }}<br />
       <a (click)="download(gallery.caminhoArquivo)" style="color: #0c2e8a;cursor: pointer;">Download Arquivo</a>
       <br /><br />
     </div>
-    <!--
-    <img [src]="location.imagem" style="width: 100%;">
-    <b>Info:</b> {{ location.info}}
-    -->
-
   </div>
 </ng-template>

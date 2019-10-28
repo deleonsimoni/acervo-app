@@ -24,7 +24,7 @@ const GallerySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  long: {
+  lng: {
     type: String,
     required: true
   },
