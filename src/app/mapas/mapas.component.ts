@@ -36,9 +36,11 @@ export class MapasComponent implements OnInit {
   carregando = false;
   geocoder: any;
   galleries: any;
-  categoria = 0;
+  gallerieSelect: any;
+  categoria = "0";
 
   public categorias = [
+    { id: 0, name: 'Todas' },
     { id: 1, name: 'Museus pedagógicos' },
     { id: 2, name: 'Museus de escola' },
     { id: 3, name: 'Centros de memoria' },
@@ -71,7 +73,8 @@ export class MapasComponent implements OnInit {
     });
   }
   
-  openModal(template: TemplateRef<any>, marcacao: any) {
+  openModal(template: TemplateRef<any>, pos: any) {
+    this.gallerieSelect = [ pos ];
     this.modalRef = this.modalService.show(template);
   }
 
@@ -99,8 +102,7 @@ export class MapasComponent implements OnInit {
   }
 
   getNomeCategoria(categoria) {
-    return this.categorias.filter(
-      element => element.id + "" === categoria)[0].name;
+    return this.categorias.filter(element => element.id + "" === categoria)[0].name;
   }
 
   styles = [

@@ -28,9 +28,7 @@ async function insert(user) {
   return await new User(user).save();
 }
 
-
 async function upload(req, res) {
-
   console.log('aquiiii');
   let formulario = JSON.parse(req.body.formulario);
   console.log('upload');
@@ -47,10 +45,7 @@ async function upload(req, res) {
   return galleryInsert;
 }
 
-
 async function saveUpload(filesName, formulario) {
-
-
   let work = {
     titulo: formulario.titulo,
     nomeInstituicao: formulario.nomeInstituicao,
@@ -58,12 +53,11 @@ async function saveUpload(filesName, formulario) {
     caminhoArquivo: filesName[0],
     categoria: formulario.categoria,
     lat: formulario.lat,
-    long: formulario.long
+    lng: formulario.lng
   }
 
   let galleryInsert = await new Gallery(work).save();
   return galleryInsert;
-
 }
 
 async function uploadWorks(files) {
@@ -86,9 +80,7 @@ async function uploadWorks(files) {
     retorno.temErro = true;
     retorno.mensagem = 'Servidor momentaneamente inoperante. Tente novamente mais tarde.';
   });
-
   return retorno;
-
 }
 
 async function downloadFileS3(req) {
@@ -97,6 +89,7 @@ async function downloadFileS3(req) {
 }
 
 async function getGallery(req) {
-  let galleryFind = await Gallery.find();
+  var query = { categoria: Number(req.query.categoria) };
+  let galleryFind = await Gallery.find(!query.categoria || query.categoria < 1 ? {} : query );
   return galleryFind;
 }

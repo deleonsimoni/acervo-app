@@ -8,10 +8,8 @@
             <div>
               <select class="form-control" id="opt" [(ngModel)]="categoria"
                   (change)="mudarCategoria()">
-                <option disabled="true" [value]="0">Selecione
-                  a categoria</option>
-                <option *ngFor="let categoria of categorias" [value]="categoria.id">
-                  {{ categoria.name }}
+                <option *ngFor="let categoriaS of categorias" [value]="categoriaS.id">
+                  {{ categoriaS.name }}
                 </option>
               </select>
             </div>
@@ -39,7 +37,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <div *ngFor="let gallery of galleries">
+    <div *ngFor="let gallery of gallerieSelect">
       <b>Categoria:</b> {{ getNomeCategoria(categoria) }}<br />
       <b>Titulo:</b> {{ gallery.titulo}}<br />
       <b>Nome da Instituição:</b> {{ gallery.nomeInstituicao }}<br />
