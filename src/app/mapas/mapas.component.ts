@@ -74,7 +74,7 @@ export class MapasComponent implements OnInit {
   }
   
   openModal(template: TemplateRef<any>, pos: any) {
-    this.gallerieSelect = [ pos ];
+    this.gallerieSelect = pos;
     this.modalRef = this.modalService.show(template);
   }
 

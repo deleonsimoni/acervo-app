@@ -5,10 +5,6 @@ const GallerySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  nomeInstituicao: {
-    type: String,
-    required: true
-  },
   descricao: {
     type: String,
     required: true
@@ -17,6 +13,18 @@ const GallerySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+const LocalSchema = new mongoose.Schema({
+  nomeInstituicao: {
+    type: String,
+    required: true
+  },
+  galeria: [GallerySchema],
   categoria: {
     type: Number
   },
@@ -37,4 +45,4 @@ const GallerySchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('Gallery', GallerySchema);
+module.exports = mongoose.model('Gallery', LocalSchema);

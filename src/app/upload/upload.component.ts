@@ -1,10 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { MapsAPILoader } from '@agm/core';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 declare var google: any;
+
+interface Galeria {
+  titulo: string;
+  descricao: string;
+  img: any;
+  caminhoArquivo: string;
+}
 
 @Component({
   selector: 'app-upload',
@@ -14,10 +22,15 @@ declare var google: any;
 export class UploadComponent implements OnInit {
 
   geocoder: any;
+  modalRef: BsModalRef;
 
   public submissionForm: FormGroup;
   public carregando = false;
   private arquivo: FileList;
+  galeriaLista = [];
+  public galeria: Galeria = {
+    titulo: "", descricao: "", img: null, caminhoArquivo: "asd/dd/d"
+  };
 
   public categorias = [
     { id: 1, name: 'Museus pedagógicos' },
@@ -34,6 +47,7 @@ export class UploadComponent implements OnInit {
     public mapsApiLoader: MapsAPILoader,
     private builder: FormBuilder,
     private toastr: ToastrService,
+    private modalService: BsModalService,
     private http: HttpClient,
   ) {
     this.mapsApiLoader = mapsApiLoader;
@@ -75,17 +89,8 @@ export class UploadComponent implements OnInit {
   }
 
   public upload() {
-    if (!this.arquivo) {
-      this.toastr.error('É necessário selecionar um arquivo para upload', 'Atenção');
-      return;
-    } if (this.arquivo[0].size > 7000 * 1027) {
-      this.toastr.error('O arquivo excede o tamanho máximo', 'Atenção');
-      return;
-    } if (!this.submissionForm.value.categoria) {
+    if (!this.submissionForm.value.categoria) {
       this.toastr.error('Selecione uma categoria.', 'Atenção');
-      return;
-    } if (!this.submissionForm.value.titulo) {
-      this.toastr.error('Escreva o titulo do arquivo', 'Atenção');
       return;
     } if (!this.submissionForm.value.nomeInstituicao) {
       this.toastr.error('Escreva o nome da Instituição.', 'Atenção');
@@ -93,17 +98,15 @@ export class UploadComponent implements OnInit {
     } if (!this.submissionForm.value.lng) {
       this.toastr.error('Marque uma posição no mapa.', 'Atenção');
       return;
-    } if (!this.submissionForm.value.descricao) {
-      this.toastr.error('Escreva a descrição', 'Atenção');
-      return;
     } else {
       this.carregando = true;
 
-      this.submissionForm.value.arquivo = this.arquivo[0];
+      //this.submissionForm.value.arquivo = this.arquivo[0];
+      this.submissionForm.value.galeria = this.galeriaLista;
 
       const formData: FormData = new FormData();
 
-      formData.append('fileArray', this.arquivo[0], `teste/${this.arquivo[0].name}`);
+      //formData.append('fileArray', this.arquivo[0], `teste/${this.arquivo[0].name}`);
       formData.append('formulario', JSON.stringify(this.submissionForm.value));
 
       this.http.post(`api/user/upload/`, formData).subscribe((res: any) => {
@@ -142,5 +145,35 @@ export class UploadComponent implements OnInit {
         alert("Desculpa, mas a pesquisa não trouxe resultados");
       }
     });
+
+  }
+  
+  openModal(template: TemplateRef<any>, pos: any) {
+    //this.gallerieSelect = [ pos ];
+    this.modalRef = this.modalService.show(template);
+    return false;
+  }
+
+  addGaleria(){
+    if (!this.arquivo) {
+      this.toastr.error('É necessário selecionar um arquivo para upload', 'Atenção');
+      return;
+    } if (this.arquivo[0].size > 7000 * 1027) {
+      this.toastr.error('O arquivo excede o tamanho máximo', 'Atenção');
+      return;
+    } if (!this.galeria.titulo) {
+      this.toastr.error('Escreva o titulo do arquivo', 'Atenção');
+      return;
+    } if (!this.galeria.descricao) {
+      this.toastr.error('Escreva a descrição', 'Atenção');
+      return;
+    }
+
+    this.galeria.img = this.arquivo;
+    this.arquivo = null;
+    this.galeriaLista.push(this.galeria);
+    this.galeria = {
+      titulo: "", descricao: "", img: null, caminhoArquivo: "asd/dd/d"
+    };
   }
 }
