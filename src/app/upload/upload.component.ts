@@ -33,7 +33,8 @@ export class UploadComponent implements OnInit {
   };
 
   public categorias = [
-    { id: 1, name: 'Museus pedagógicos' },
+    { id: 1, name: 'Depoimentos' },
+    //{ id: 1, name: 'Museus pedagógicos' },
     { id: 2, name: 'Museus de escola' },
     { id: 3, name: 'Centros de memoria' },
     { id: 4, name: 'Outros museus e centros de memórias internacionais' },
