@@ -1,0 +1,14 @@
+<mat-card *ngFor="let item of depoimentos" class="card">
+    <mat-card-header>
+        {{ item.descricao }}
+    </mat-card-header>
+
+    <mat-card-content style="font-family: Roboto,sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    line-height: 2rem;
+    text-decoration: inherit;
+    text-transform: inherit;">
+        por {{ item.titulo }}
+    </mat-card-content>
+</mat-card>

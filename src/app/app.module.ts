@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
 
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
@@ -25,6 +26,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { ToastrModule } from 'ngx-toastr';
 import { UploadComponent } from './upload/upload.component';
 import { environment } from '../environments/environment';
+import { DepoimentosComponent } from './depoimentos/depoimentos/depoimentos.component';
 
 @NgModule({
   declarations: [
@@ -34,12 +36,14 @@ import { environment } from '../environments/environment';
     FooterComponent,
     MapasComponent,
     UploadComponent,
+    DepoimentosComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
+    MatCardModule,
     SharedModule,
     AuthModule,
     AdminModule,

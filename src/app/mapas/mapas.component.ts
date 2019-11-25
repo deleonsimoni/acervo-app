@@ -1,7 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { DownloadFileService } from '../services/download-file.service';
 import { HttpClient } from '@angular/common/http';
 
 declare var google: any;
@@ -41,7 +40,7 @@ export class MapasComponent implements OnInit {
 
   public categorias = [
     { id: 0, name: 'Todas' },
-    { id: 1, name: 'Museus pedagógicos' },
+    { id: 1, name: 'Depoimentos' },
     { id: 2, name: 'Museus de escola' },
     { id: 3, name: 'Centros de memoria' },
     { id: 4, name: 'Outros museus e centros de memórias internacionais' },
@@ -59,7 +58,6 @@ export class MapasComponent implements OnInit {
 
   constructor(public mapsApiLoader: MapsAPILoader,
     private modalService: BsModalService,
-    private downloadService: DownloadFileService,
     private http: HttpClient
   ) {}
 
@@ -98,7 +96,6 @@ export class MapasComponent implements OnInit {
       vm.carregando = false;
     }
     this.carregando = true;
-    this.downloadService.getFile(nameFile, sucessoDownload, falhaDownload);
   }
 
   getNomeCategoria(categoria) {

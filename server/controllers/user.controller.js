@@ -17,6 +17,7 @@ const userSchema = Joi.object({
 module.exports = {
   insert,
   upload,
+  uploadGaleria,
   downloadFileS3,
   getGallery
 }
@@ -28,29 +29,37 @@ async function insert(user) {
   return await new User(user).save();
 }
 
-async function upload(req, res) {
-  console.log('aquiiii');
-  let formulario = JSON.parse(req.body.formulario);
-  console.log('upload');
-  let responseUpload = await uploadWorks(req.files.fileArray);
-  if (responseUpload.temErro) {
-    console.log('erro no upload de arquivos: ' + JSON.stringify(responseUpload));
-    return responseUpload;
-  }
-  console.log('subi todos os arquivos: ' + JSON.stringify(responseUpload));
-
-  console.log('atualizando  banco');
-  let galleryInsert = await saveUpload(responseUpload.filesS3, formulario);
+async function uploadGaleria(req) {
+  let galeria = JSON.parse(req.body.galeria);
+  let galleryInsert = await saveUploadGaleria(galeria);
 
   return galleryInsert;
 }
 
-async function saveUpload(filesName, formulario) {
+async function saveUploadGaleria(galeria) {
+  let galleryInsert = Gallery.findOne({ '_id': galeria.id }).exec(function(err,book) {
+    book.galeria.push( galeria.galeria );
+    book.save(function(err){
+      console.log('galeria.galeria' + err);
+    });
+  });
+  return galleryInsert;
+}
+
+async function upload(req) {
+  console.log('aquiiii');
+  let formulario = JSON.parse(req.body.formulario);
+ 
+  console.log('atualizando  banco');
+  let galleryInsert = await saveUpload(formulario);
+
+  return galleryInsert;
+}
+
+async function saveUpload(formulario) {
   let work = {
-    titulo: formulario.titulo,
     nomeInstituicao: formulario.nomeInstituicao,
-    descricao: formulario.descricao,
-    caminhoArquivo: filesName[0],
+    galeria: formulario.galeria,
     categoria: formulario.categoria,
     lat: formulario.lat,
     lng: formulario.lng
@@ -72,14 +81,7 @@ async function uploadWorks(files) {
 
   console.log('museu/' + files.name);
   fileName = 'museu/' + files.name;
-  await S3Uploader.uploadFile(fileName, files.data).then(fileData => {
-    console.log('Arquivo submetido para AWS ' + fileName);
-    retorno.filesS3.push(fileName);
-  }, err => {
-    console.log('Erro ao enviar o trabalho para AWS: ' + fileName);
-    retorno.temErro = true;
-    retorno.mensagem = 'Servidor momentaneamente inoperante. Tente novamente mais tarde.';
-  });
+  
   return retorno;
 }
 

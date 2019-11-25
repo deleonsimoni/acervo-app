@@ -10,7 +10,7 @@ module.exports = router;
 //router.use(passport.authenticate('jwt', { session: false }))
 
 router.post('/upload', [fileUpload()], asyncHandler(upload));
-
+router.post('/upload-galeria', [fileUpload()], asyncHandler(uploadGaleria));
 router.get('/downloadFile', downloadFile);
 router.get('/getGallerys', getGallerys);
 
@@ -25,7 +25,12 @@ async function insert(req, res) {
 
 async function upload(req, res) {
   console.log('vamos subir');
-  let response = await userCtrl.upload(req, res);
+  let response = await userCtrl.upload(req);
+  res.json(response);
+}
+
+async function uploadGaleria(req, res) {
+  let response = await userCtrl.uploadGaleria(req);
   res.json(response);
 }
 

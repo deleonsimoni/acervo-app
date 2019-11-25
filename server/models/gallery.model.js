@@ -10,8 +10,7 @@ const GallerySchema = new mongoose.Schema({
     required: true
   },
   caminhoArquivo: {
-    type: String,
-    required: true
+    type: String
   },
   createdAt: {
     type: Date,
