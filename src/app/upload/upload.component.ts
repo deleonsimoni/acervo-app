@@ -200,6 +200,18 @@ export class UploadComponent implements OnInit {
     }
   }
 
+  removerID(id, arr) {
+    return arr.filter(function (obj) {
+      return obj._id != id;
+    });
+  }
+
+  reciverDelete(respostaFilho) {
+    this.galeriaLista = this.removerID(respostaFilho, this.galeriaLista);
+
+    console.log('Delecao', respostaFilho);
+  }
+
   mudarCategoria(){
     this.http.get("api/user/getGallerys?categoria=" + this.submissionForm.get('categoria').value).subscribe((res: any) => {
       this.galleries = res;

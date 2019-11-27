@@ -18,6 +18,7 @@ module.exports = {
   insert,
   upload,
   uploadGaleria,
+  deleteDepoimento,
   downloadFileS3,
   getGallery
 }
@@ -94,4 +95,13 @@ async function getGallery(req) {
   var query = { categoria: Number(req.query.categoria) };
   let galleryFind = await Gallery.find(!query.categoria || query.categoria < 1 ? {} : query );
   return galleryFind;
+}
+
+async function deleteDepoimento(req) {
+  await Gallery.update({ },
+    { $pull: { galeria: { $in: [ "apples", "oranges" ] }, vegetables: "carrots" } },
+    { multi: true })
+    .then(
+      ()=>{ return "Excluido com sucesso  "},
+      err => { return "Erro na exclusao" });
 }

@@ -35,7 +35,8 @@
                                                     placeholder="Nome da instituição" formControlName="nomeInstituicao" />
 
                                             <div>
-                                                <app-depoimentos [depoimentos]="galeriaLista"></app-depoimentos>
+                                                <app-depoimentos [depoimentos]="galeriaLista" 
+                                                        (depoimentoRemovido)="reciverDelete($event)"></app-depoimentos>
                                             </div>
 
                                             <button (click)="openModal(template, $event)" 
