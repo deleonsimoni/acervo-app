@@ -5,24 +5,24 @@
       PEDAGÓGICO VIRTUAL
     </a>
     <button aria-label="Toggle navigation"
-        class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
-        type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive">
+      class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded"
+      type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive">
       Menu
       <i class="fas fa-bars"></i>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item mx-0 mx-lg-1">
-          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" 
-              routerLink="/mapas">Mapa</a>
+          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" routerLink="/mapas">Mapa</a>
         </li>
         <li class="nav-item mx-0 mx-lg-1">
-          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" 
-              routerLink="/upload">Upload</a>
+          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" routerLink="/upload">Upload</a>
         </li>
         <li class="nav-item mx-0 mx-lg-1">
-          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" 
-              routerLink="/auth/login">Entrar</a>
+          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" routerLink="/auth/login">Entrar</a>
+        </li>
+        <li class="nav-item mx-0 mx-lg-1">
+          <a href class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" (click)="logout()">Sair</a>
         </li>
       </ul>
     </div>
