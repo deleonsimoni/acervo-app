@@ -201,8 +201,7 @@ export class UploadComponent implements OnInit {
   }
 
   mudarCategoria(){
-    this.carregando = true;
-    this.http.get(`api/user/getGallerys?categoria=${this.submissionForm.get('categoria').value}`).subscribe((res: any) => {
+    this.http.get("api/user/getGallerys?categoria=" + this.submissionForm.get('categoria').value).subscribe((res: any) => {
       this.galleries = res;
       this.carregando = false;
       this.id = null;
@@ -214,7 +213,6 @@ export class UploadComponent implements OnInit {
         lng: null
       });
     }, err => {
-      this.carregando = false;
     });
   }
 }
