@@ -15,13 +15,13 @@
         <li class="nav-item mx-0 mx-lg-1">
           <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" routerLink="/mapas">Mapa</a>
         </li>
-        <li class="nav-item mx-0 mx-lg-1">
+        <li *ngIf="user && user.icAdmin" class="nav-item mx-0 mx-lg-1">
           <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" routerLink="/upload">Upload</a>
         </li>
-        <li class="nav-item mx-0 mx-lg-1">
+        <li *ngIf="!user" class="nav-item mx-0 mx-lg-1">
           <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" routerLink="/auth/login">Entrar</a>
         </li>
-        <li class="nav-item mx-0 mx-lg-1">
+        <li *ngIf="user" class="nav-item mx-0 mx-lg-1">
           <a href class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" (click)="logout()">Sair</a>
         </li>
       </ul>

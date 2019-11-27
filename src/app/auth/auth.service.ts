@@ -26,9 +26,9 @@ export class AuthService {
         observer.complete();
       }, error => {
         if (error.status === 401) {
-          alert('Usuário ou senha inválidos')
+          alert('Usuário ou senha inválidos');
         } else {
-          alert('Ocorreu um erro na autenticação, tente novamente mais tarde.')
+          alert('Ocorreu um erro na autenticação, tente novamente mais tarde.');
         }
       });
 
