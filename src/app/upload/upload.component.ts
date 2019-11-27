@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { MapsAPILoader } from '@agm/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { retry, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 declare var google: any;
 
@@ -206,10 +208,18 @@ export class UploadComponent implements OnInit {
     });
   }
 
-  reciverDelete(respostaFilho) {
-    this.galeriaLista = this.removerID(respostaFilho, this.galeriaLista);
-
-    console.log('Delecao', respostaFilho);
+  reciverDelete(depoimentoId) {
+    this.galeriaLista = this.removerID(depoimentoId, this.galeriaLista);
+    this.http.delete("api/user/deleteDepoimento/"+depoimentoId).subscribe((res: any) => {
+      if (res && res.temErro) {
+        this.toastr.error(res.mensagem, 'Erro: ');
+      } else {
+        this.toastr.success('Arquivo enviado com sucesso', 'Sucesso');
+      }
+    }, err => {
+      this.toastr.error('Servidor momentaneamente inoperante.', 'Erro: ' + err);
+    });
+    console.log('Delecao', depoimentoId);
   }
 
   mudarCategoria(){

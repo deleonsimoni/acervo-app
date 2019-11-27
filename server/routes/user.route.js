@@ -13,6 +13,7 @@ router.post('/upload', [fileUpload()], asyncHandler(upload));
 router.post('/upload-galeria', [fileUpload()], asyncHandler(uploadGaleria));
 router.get('/downloadFile', downloadFile);
 router.get('/getGallerys', getGallerys);
+router.delete('/deleteDepoimento/:depoimentoId', deleteDepoimento);
 
 router.route('/')
   .post(asyncHandler(insert));
@@ -41,5 +42,10 @@ async function downloadFile(req, res) {
 
 async function getGallerys(req, res) {
   let response = await userCtrl.getGallery(req);
+  res.json(response);
+}
+
+async function deleteDepoimento(req, res) {
+  let response = await userCtrl.deleteDepoimento(req.params.depoimentoId);
   res.json(response);
 }

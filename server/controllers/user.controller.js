@@ -98,9 +98,10 @@ async function getGallery(req) {
 }
 
 async function deleteDepoimento(req) {
-  await Gallery.update({ },
-    { $pull: { galeria: { $in: [ "apples", "oranges" ] }, vegetables: "carrots" } },
-    { multi: true })
+   await Gallery.update({},
+    { $pull: { galeria: { _id: req }}}, 
+    { multi: true }
+    )
     .then(
       ()=>{ return "Excluido com sucesso  "},
       err => { return "Erro na exclusao" });
