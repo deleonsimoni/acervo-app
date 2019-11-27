@@ -156,9 +156,28 @@
 <section class="page-section bg-site">
   <div class="container text-center">
     <br />
-    <h2 class="mb-4">Crie sua conta e participe da história!</h2>
-    <button [routerLink]="'/auth/register'" class="btn btn-primary">
-      Participar!
+    <h2 class="mb-4">Aguardando financiamento</h2>
+    <button class="btn btn-primary">
+      Aguardando financiamento
     </button>
   </div>
 </section>
+
+
+
+
+
+<ng-template id="template" #template>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Em construção</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    Aguardando Financimento...
+    <br />
+    <img src="../assets/img/aguardandoFinanciamento.jpg" class="img-fluid capa-livro" />
+
+  </div>
+</ng-template>
