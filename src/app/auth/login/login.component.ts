@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import {AuthService} from '../auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -19,10 +19,15 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.authService.login(this.email, this.password)
-    .subscribe(data => {
-      this.router.navigate(['']);
-    })
+
+    if (!this.email || !this.password) {
+      alert('Preencha corretamente os campos de acesso.');
+    } else {
+      this.authService.login(this.email, this.password)
+        .subscribe(data => {
+          this.router.navigate(['']);
+        });
+    }
   }
 
 }
