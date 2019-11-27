@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-depoimentos',
@@ -8,9 +8,18 @@ import { Component, OnInit, Input } from '@angular/core';
 export class DepoimentosComponent implements OnInit {
 
   @Input() depoimentos: any;
+  @Output() depoimentoRemovido = new EventEmitter();
+  @Output() depoimentoAlterado = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  deleteDepoimento(idDepoimento){
+    this.depoimentoRemovido.emit(idDepoimento);
+  }
+  alterDepoimento(depoimento){
+    this.depoimentoAlterado.emit(depoimento);
   }
 }

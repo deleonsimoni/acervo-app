@@ -6,4 +6,9 @@
     <mat-card-content style="font-family: Roboto,sans-serif;">
         por <b>{{ item.titulo }}</b>
     </mat-card-content>
+
+    <mat-card-actions>
+        <button mat-button (click)="deleteDepoimento(item._id)">Deletar</button>
+        <button mat-button (click)="alterDepoimento(item)">Editar</button>
+    </mat-card-actions>
 </mat-card>
