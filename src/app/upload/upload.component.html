@@ -7,9 +7,7 @@
             <div class="offset-md-1 col-md-10">
                 <div class="box">
                     <div class="form">
-                        <form role="form" class="contactForm" [formGroup]="submissionForm" (ngSubmit)="upload()"
-                            encType="multipart/form-data">
-
+                        <form role="form" class="contactForm" [formGroup]="submissionForm" encType="multipart/form-data">
                             <div class="section-header">
                                 <h2>Upload</h2>
                             </div>
@@ -36,7 +34,9 @@
 
                                             <div>
                                                 <app-depoimentos [depoimentos]="galeriaLista" 
-                                                        (depoimentoRemovido)="reciverDelete($event)"></app-depoimentos>
+                                                        (depoimentoRemovido)="reciverDelete($event);$event.stopPropagation();" 
+                                                        (depoimentoAlterado)="reciverAlter($event);$event.stopPropagation();">
+                                                </app-depoimentos>
                                             </div>
 
                                             <button (click)="openModal(template, $event)" 
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="row justify-content-center">
                                         <button *ngIf="!carregando" class="btn-get-started"
-                                            type="submit">Enviar</button>
+                                            (click)="upload()">Enviar</button>
 
                                         <div *ngIf="carregando" class="row justify-content-center"><button
                                                 class="btn-get-started"><i class="fas fa-spinner fa-pulse"></i></button>
@@ -94,8 +94,8 @@
     <input type="text" name="descricao" class="form-control mt-2" id="title"
             placeholder="Depoimento" [(ngModel)]="galeria.descricao" required/>
 
-    <div class="row justify-content-center">
-        <button class="btn-get-started"
+    <div class="justify-content-center">
+        <button
             (click)="addGaleria()">Enviar</button>
     </div>
   </div>

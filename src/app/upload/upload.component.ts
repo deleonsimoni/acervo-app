@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
@@ -12,6 +12,7 @@ declare var google: any;
 interface Galeria {
   titulo: string;
   descricao: string;
+  id: string;
 }
 
 @Component({
@@ -21,14 +22,17 @@ interface Galeria {
 })
 export class UploadComponent implements OnInit {
 
+  @ViewChild('template', {static:false}) templateRef: TemplateRef<any>;
+
   geocoder: any;
   modalRef: BsModalRef;
 
   public submissionForm: FormGroup;
   public carregando = false;
+
   galeriaLista = [];
   public galeria: Galeria = {
-    titulo: "", descricao: ""
+    titulo: "", descricao: "", id: ""
   };
   categoria = 0;
   public categorias = [
@@ -176,6 +180,10 @@ export class UploadComponent implements OnInit {
         id: this.id
       }
 
+      if (this.galeria.id.length>1){
+        this.reciverDelete(this.galeria.id) ;
+      }
+
       formData.append('galeria', JSON.stringify(aux));
 
       this.http.post(`api/user/upload-galeria/`, formData).subscribe((res: any) => {
@@ -186,9 +194,14 @@ export class UploadComponent implements OnInit {
         } else {
           this.galeriaLista.push(this.galeria);
           this.galeria = {
-            titulo: "", descricao: ""
+            titulo: "", descricao: "", id:""
           };
-          this.toastr.success('Arquivo enviado com sucesso', 'Sucesso');
+          if (this.galeria.id.length>1){
+            this.toastr.success('Arquivo alterado com sucesso', 'Sucesso');
+            this.modalRef.hide();
+          } else {
+            this.toastr.success('Depoimento registrado com sucesso', 'Sucesso');
+          }
         }
       }, err => {
         this.carregando = false;
@@ -197,7 +210,7 @@ export class UploadComponent implements OnInit {
     } else {
       this.galeriaLista.push(this.galeria);
       this.galeria = {
-        titulo: "", descricao: ""
+        titulo: "", descricao: "", id:""
       };
     }
   }
@@ -214,12 +227,24 @@ export class UploadComponent implements OnInit {
       if (res && res.temErro) {
         this.toastr.error(res.mensagem, 'Erro: ');
       } else {
-        this.toastr.success('Arquivo enviado com sucesso', 'Sucesso');
+        if (this.galeria.id.length==0){
+          this.toastr.success('Arquivo removido com sucesso', 'Sucesso');
+        }
       }
     }, err => {
       this.toastr.error('Servidor momentaneamente inoperante.', 'Erro: ' + err);
     });
     console.log('Delecao', depoimentoId);
+  }
+
+  reciverAlter(depoimento) {
+    this.galeria = {
+      titulo: depoimento.titulo, descricao: depoimento.descricao, id: depoimento._id
+    };
+
+    this.modalRef = this.modalService.show(this.templateRef);
+    depoimento.stopPropagation();
+    return false;
   }
 
   mudarCategoria(){
