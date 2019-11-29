@@ -4,8 +4,6 @@ import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
 import { MapsAPILoader } from '@agm/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-import { retry, catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 declare var google: any;
 
@@ -30,11 +28,13 @@ export class UploadComponent implements OnInit {
   public submissionForm: FormGroup;
   public carregando = false;
 
-  galeriaLista = [];
   public galeria: Galeria = {
     titulo: "", descricao: "", id: ""
   };
   categoria = 0;
+  galleries: any;
+  id: any = null;
+
   public categorias = [
     { id: 1, name: 'Depoimentos' },
     //{ id: 1, name: 'Museus pedagógicos' },
@@ -46,8 +46,6 @@ export class UploadComponent implements OnInit {
     { id: 7, name: 'Escolinhas de arte do Brasil' },
     { id: 8, name: 'Formação docente' }
   ];
-  galleries: any;
-  id: any = null;
 
   constructor(
     public mapsApiLoader: MapsAPILoader,
@@ -70,6 +68,7 @@ export class UploadComponent implements OnInit {
     this.submissionForm = this.builder.group({
       categoria: [null],
       nomeInstituicao: [null],
+      galeria: [[]],
       lat: [null],
       lng: [null]
     });
@@ -81,22 +80,22 @@ export class UploadComponent implements OnInit {
 
     this.submissionForm.patchValue({
       nomeInstituicao: "",
+      galeria: [],
       lat: lat,
       lng: lng
     });
     this.id = null;
-    this.galeriaLista = [];
   }
 
   selectMarker(position: any) {
     this.submissionForm.patchValue({
       categoria: position.categoria,
       nomeInstituicao: position.nomeInstituicao,
+      galeria: position.galeria,
       lat: position.lat,
       lng: position.lng
     });
     this.id = position._id;
-    this.galeriaLista = position.galeria;
   }
 
   public upload() {
@@ -112,12 +111,8 @@ export class UploadComponent implements OnInit {
     } else {
       this.carregando = true;
 
-      //this.submissionForm.value.arquivo = this.arquivo[0];
-      this.submissionForm.value.galeria = this.galeriaLista;
-
       const formData: FormData = new FormData();
 
-      //formData.append('fileArray', this.arquivo[0], `teste/${this.arquivo[0].name}`);
       formData.append('formulario', JSON.stringify(this.submissionForm.value));
 
       this.http.post(`api/user/upload/`, formData).subscribe((res: any) => {
@@ -127,8 +122,7 @@ export class UploadComponent implements OnInit {
           this.toastr.error(res.mensagem, 'Erro: ');
         } else {
           this.toastr.success('Arquivo enviado com sucesso', 'Sucesso');
-          this.galeriaLista = [];
-          this.submissionForm.reset();
+          this.mudarCategoria();
         }
       }, err => {
         this.carregando = false;
@@ -192,42 +186,37 @@ export class UploadComponent implements OnInit {
         if (res && res.temErro) {
           this.toastr.error(res.mensagem, 'Erro: ');
         } else {
-          this.galeriaLista.push(this.galeria);
-          this.galeria = {
-            titulo: "", descricao: "", id:""
-          };
           if (this.galeria.id.length>1){
             this.toastr.success('Arquivo alterado com sucesso', 'Sucesso');
             this.modalRef.hide();
           } else {
             this.toastr.success('Depoimento registrado com sucesso', 'Sucesso');
           }
+          this.galeria = {
+            titulo: "", descricao: "", id:""
+          };
+
+          this.pesquisaPorCategoria();
         }
       }, err => {
         this.carregando = false;
         this.toastr.error('Servidor momentaneamente inoperante.', 'Erro: ');
       });
     } else {
-      this.galeriaLista.push(this.galeria);
+      this.submissionForm.get('galeria').value.push(this.galeria);
       this.galeria = {
         titulo: "", descricao: "", id:""
       };
     }
   }
 
-  removerID(id, arr) {
-    return arr.filter(function (obj) {
-      return obj._id != id;
-    });
-  }
-
   reciverDelete(depoimentoId) {
-    this.galeriaLista = this.removerID(depoimentoId, this.galeriaLista);
     this.http.delete("api/user/deleteDepoimento/"+depoimentoId).subscribe((res: any) => {
       if (res && res.temErro) {
         this.toastr.error(res.mensagem, 'Erro: ');
       } else {
-        if (this.galeria.id.length==0){
+        this.pesquisaPorCategoria();
+        if (this.galeria.id.length>1){
           this.toastr.success('Arquivo removido com sucesso', 'Sucesso');
         }
       }
@@ -243,23 +232,35 @@ export class UploadComponent implements OnInit {
     };
 
     this.modalRef = this.modalService.show(this.templateRef);
-    depoimento.stopPropagation();
-    return false;
   }
 
   mudarCategoria(){
+    this.pesquisaPorCategoria();
+    
+    this.id = null;
+
+    this.submissionForm.patchValue({
+      nomeInstituicao: "",
+      galeria: this.galeria,
+      lat: null,
+      lng: null
+    });
+  }
+
+  pesquisaPorCategoria(){
     this.http.get("api/user/getGallerys?categoria=" + this.submissionForm.get('categoria').value).subscribe((res: any) => {
       this.galleries = res;
-      this.carregando = false;
-      this.id = null;
-      this.galeriaLista = [];
-
-      this.submissionForm.patchValue({
-        nomeInstituicao: "",
-        lat: null,
-        lng: null
-      });
+      if (this.id){
+        this.populaListaDepoimento();
+      }
     }, err => {
     });
+  }
+
+  populaListaDepoimento(){
+    console.log(this.galleries.find(element => element._id == this.id).galeria);
+    this.submissionForm.get('galeria').setValue(
+        this.galleries.find(element => element._id == this.id 
+      ).galeria);
   }
 }

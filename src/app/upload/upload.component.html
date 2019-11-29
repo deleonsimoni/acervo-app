@@ -32,10 +32,10 @@
                                             <input type="text" name="titlae" class="form-control mt-2" id="title"
                                                     placeholder="Nome da instituição" formControlName="nomeInstituicao" />
 
-                                            <div>
-                                                <app-depoimentos [depoimentos]="galeriaLista" 
-                                                        (depoimentoRemovido)="reciverDelete($event);$event.stopPropagation();" 
-                                                        (depoimentoAlterado)="reciverAlter($event);$event.stopPropagation();">
+                                            <div *ngIf="submissionForm.get('galeria').value.length > 0">
+                                                <app-depoimentos [depoimentos]="submissionForm.get('galeria').value" 
+                                                        (depoimentoRemovido)="reciverDelete($event)" 
+                                                        (depoimentoAlterado)="reciverAlter($event)">
                                                 </app-depoimentos>
                                             </div>
 
