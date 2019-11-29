@@ -1,9 +1,9 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { HttpClient } from '@angular/common/http';
 import { MapsAPILoader } from '@agm/core';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
 
 declare var google: any;
 
@@ -151,8 +151,7 @@ export class UploadComponent implements OnInit {
     });
   }
   
-  openModal(template: TemplateRef<any>, pos: any) {
-    //this.gallerieSelect = [ pos ];
+  openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
     return false;
   }
@@ -210,20 +209,30 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  reciverDelete(depoimentoId) {
-    this.http.delete("api/user/deleteDepoimento/"+depoimentoId).subscribe((res: any) => {
-      if (res && res.temErro) {
-        this.toastr.error(res.mensagem, 'Erro: ');
-      } else {
-        this.pesquisaPorCategoria();
-        if (this.galeria.id.length>1){
-          this.toastr.success('Arquivo removido com sucesso', 'Sucesso');
-        }
-      }
-    }, err => {
-      this.toastr.error('Servidor momentaneamente inoperante.', 'Erro: ' + err);
+  removerID(id, arr) {
+    return arr.filter(function (obj) {
+      return obj._id != id;
     });
-    console.log('Delecao', depoimentoId);
+  }
+
+  reciverDelete(depoimentoId) {
+    if (!this.id){
+      this.submissionForm.get('galeria').value.push(this.removerID(depoimentoId, this.submissionForm.get('galeria').value));
+    } else {
+      this.http.delete("api/user/deleteDepoimento/"+depoimentoId).subscribe((res: any) => {
+        if (res && res.temErro) {
+          this.toastr.error(res.mensagem, 'Erro: ');
+        } else {
+          this.pesquisaPorCategoria();
+          if (this.galeria.id.length>1){
+            this.toastr.success('Arquivo removido com sucesso', 'Sucesso');
+          }
+        }
+      }, err => {
+        this.toastr.error('Servidor momentaneamente inoperante.', 'Erro: ' + err);
+      });
+      console.log('Delecao', depoimentoId);
+    }
   }
 
   reciverAlter(depoimento) {
