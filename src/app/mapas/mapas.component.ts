@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MapsAPILoader } from '@agm/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../auth/auth.service';
 
 declare var google: any;
 
@@ -37,6 +38,7 @@ export class MapasComponent implements OnInit {
   galleries: any;
   gallerieSelect: any;
   categoria = "0";
+  user: any;
 
   public categorias = [
     { id: 0, name: 'Todas' },
@@ -58,8 +60,9 @@ export class MapasComponent implements OnInit {
 
   constructor(public mapsApiLoader: MapsAPILoader,
     private modalService: BsModalService,
+    private authService: AuthService,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.carregando = true;
@@ -70,13 +73,13 @@ export class MapasComponent implements OnInit {
       this.carregando = false;
     });
   }
-  
+
   openModal(template: TemplateRef<any>, pos: any) {
     this.gallerieSelect = pos;
     this.modalRef = this.modalService.show(template);
   }
 
-  mudarCategoria(){
+  mudarCategoria() {
     this.carregando = true;
     this.http.get(`api/user/getGallerys?categoria=${this.categoria}`).subscribe((res: any) => {
       this.galleries = res;
