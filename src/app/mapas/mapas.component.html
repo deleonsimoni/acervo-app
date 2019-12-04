@@ -6,8 +6,7 @@
         <div class="header-elements">
           <div class="form-check form-check-right form-check-switchery form-check-switchery-sm">
             <div>
-              <select class="form-control" id="opt" [(ngModel)]="categoria"
-                  (change)="mudarCategoria()">
+              <select class="form-control" id="opt" [(ngModel)]="categoria" (change)="mudarCategoria()">
                 <option *ngFor="let categoriaS of categorias" [value]="categoriaS.id">
                   {{ categoriaS.name }}
                 </option>
@@ -38,6 +37,6 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-depoimentos [depoimentos]="gallerieSelect.galeria"></app-depoimentos>
+    <app-depoimentos [depoimentos]="gallerieSelect.galeria" [isAdmin]="false"></app-depoimentos>
   </div>
 </ng-template>

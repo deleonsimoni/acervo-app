@@ -63,6 +63,7 @@
                                                     <div *ngIf="submissionForm.get('galeria').value.length > 0">
                                                         <app-depoimentos
                                                             [depoimentos]="submissionForm.get('galeria').value"
+                                                            [isAdmin]="true"
                                                             (depoimentoRemovido)="reciverDelete($event)"
                                                             (depoimentoAlterado)="reciverAlter($event)">
                                                         </app-depoimentos>

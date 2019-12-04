@@ -8,6 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class DepoimentosComponent implements OnInit {
 
   @Input() depoimentos: any;
+  @Input() isAdmin: boolean;
   @Output() depoimentoRemovido = new EventEmitter();
   @Output() depoimentoAlterado = new EventEmitter();
 
@@ -16,10 +17,10 @@ export class DepoimentosComponent implements OnInit {
   ngOnInit() {
   }
 
-  deleteDepoimento(idDepoimento){
+  deleteDepoimento(idDepoimento) {
     this.depoimentoRemovido.emit(idDepoimento);
   }
-  alterDepoimento(depoimento){
+  alterDepoimento(depoimento) {
     this.depoimentoAlterado.emit(depoimento);
   }
 }
