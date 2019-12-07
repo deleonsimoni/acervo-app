@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-depoimentos',
@@ -12,7 +13,7 @@ export class DepoimentosComponent implements OnInit {
   @Output() depoimentoRemovido = new EventEmitter();
   @Output() depoimentoAlterado = new EventEmitter();
 
-  constructor() { }
+  constructor(private _sanitizer: DomSanitizer) { }
 
   ngOnInit() {
   }
@@ -22,5 +23,9 @@ export class DepoimentosComponent implements OnInit {
   }
   alterDepoimento(depoimento) {
     this.depoimentoAlterado.emit(depoimento);
+  }
+
+  sanitizeURL(url) {
+    return this._sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

@@ -9,6 +9,9 @@ const GallerySchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  url: {
+    type: String
+  },
   caminhoArquivo: {
     type: String
   },

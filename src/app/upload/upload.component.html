@@ -104,8 +104,10 @@
         </button>
     </div>
     <div class="modal-body">
-        <input type="text" name="title" class="form-control mt-2" id="title" placeholder="Nome"
+        <input type="text" name="title" class="form-control mt-2" id="title" placeholder="Nome da pessoa"
             [(ngModel)]="galeria.titulo" required />
+        <input type="text" name="title" class="form-control mt-2" id="title" placeholder="URL do vídeo"
+            [(ngModel)]="galeria.url" required />
         <input type="text" name="descricao" class="form-control mt-2" id="title" placeholder="Depoimento"
             [(ngModel)]="galeria.descricao" required />
 

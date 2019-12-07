@@ -1,4 +1,8 @@
 <mat-card *ngFor="let item of depoimentos" class="card">
+    <mat-card-header *ngIf="item.url" style="text-align: center;">
+        <iframe width="560" height="315" [src]='sanitizeURL(item.url)' frameborder="0" allowfullscreen></iframe>
+    </mat-card-header>
+
     <mat-card-header>
         {{ item.descricao }}
     </mat-card-header>
